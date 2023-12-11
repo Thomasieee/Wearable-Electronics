@@ -21,7 +21,7 @@ void loop() {
       strip.setPixelColor(i, 0, 0, 255); // Blue color for temperature < 27°C
     } else if (temperatureC >= 27 && temperatureC < 33) {
       // Calculate the gradient between red and blue based on the temperature range
-      uint8_t blue = map(temperatureC, 27, 33, 255, 0);// maping to temorature
+      uint8_t blue = map(temperatureC, 27, 33, 255, 0);   // mapping to temperature
       uint8_t red = map(temperatureC, 27, 33, 0, 255);
       
       strip.setPixelColor(i, red, 0, blue); // Gradient of red and blue 
