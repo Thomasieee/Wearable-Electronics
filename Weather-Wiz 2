@@ -1,0 +1,51 @@
+#include <Adafruit_NeoPixel.h>
+#include <Adafruit_CircuitPlayground.h>
+
+#define NEOPIXEL_PIN 17
+#define NUM_PIXELS 10
+
+Adafruit_NeoPixel strip = Adafruit_NeoPixel(NUM_PIXELS, NEOPIXEL_PIN, NEO_GRB + NEO_KHZ800);
+
+void setup() {
+  strip.begin();
+  strip.show();
+  strip.setBrightness(50); // Adjust brightness if needed (0-255)
+  Serial.begin(9600);
+}
+
+void loop() {
+  float temperatureC = CircuitPlayground.temperature();
+
+  if (temperatureC < 31) {
+    for (int i = 0; i < NUM_PIXELS; i++) {
+      strip.setPixelColor(i, 0, 0, 255); // Blue color for temperature < 20°C
+    }
+  } else if (temperatureC >= 31 && temperatureC <= 36) {
+    // Gradual transition from blue to red between 20°C and 25°C
+    uint8_t red = map(temperatureC, 31, 36, 0, 255);
+    uint8_t blue = map(temperatureC, 31, 36, 255, 0);
+    
+    int fade = 100 ;
+  
+   
+      for (int i = 0; i < NUM_PIXELS; i++) {
+        strip.setPixelColor(i, 0 + (temperatureC * fade), 0, 255 - ( temperatureC * fade));
+      }
+      strip.show();
+    
+    }
+   else {
+    for (int i = 0; i < NUM_PIXELS; i++) {
+      strip.setPixelColor(i, 255, 0, 0); // Red color for temperature >= 25°C
+    }
+  }
+
+  strip.show(); // Show the updated color
+
+  Serial.print("Temperature Celsius: ");
+  Serial.print(temperatureC); // Print the temperature value
+  Serial.println(" °C");
+  // Serial.println( blue );
+
+  Serial.println();
+}
